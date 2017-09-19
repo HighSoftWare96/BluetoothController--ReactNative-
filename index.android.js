@@ -19,7 +19,10 @@ import {
 } from 'react-navigation';
 import {
   OneBtnMode
-} from './screens/oneBtnMode'
+} from './screens/oneBtnMode';
+import {
+  Home
+} from './screens/home';
 
 
 // costanti e stili CSS =============================
@@ -61,6 +64,12 @@ const drawerStyles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingTop: 2
   },
+  selectedBtn: {
+    backgroundColor: '#f2f2f2',
+    width: '100%',
+    flexDirection: 'row',
+    padding: 18,
+  },
   singleBtn: {
     width: '100%',
     flexDirection: 'row',
@@ -80,6 +89,10 @@ const drawerStyles = StyleSheet.create({
 
 // classe principale per il rendering degli elementi su schermo =============================
 export default class BluetoothController extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   static navigationOptions = {
     title: 'Home',
     header: null,
@@ -87,33 +100,44 @@ export default class BluetoothController extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    const { state } = this.props.navigation;
 
-    const toHome = function () {
-      navigate('Home');
+    const _toHome = function () {
+      // grazie all'id posso poi fare in modo che il bottone della sezione corrente si selezioni e diventi grigio
+      navigate('Home', { title: 'Connect device', id: 0 });
+      // refs continere i riferimenti al drawer (vedi parametro ref dato nel tag del drawer)
       this.refs['DRAWER_REF'].closeDrawer();
     }.bind(this);
 
-    const toKybrd = function () {
-      navigate('Home');
+    const _toKybrd = function () {
+      navigate('Home', { title: 'Keyboard mode', id: 1 });
       this.refs['DRAWER_REF'].closeDrawer();
     }.bind(this);
 
-    const toOneBtn = function () {
-      navigate('OneBtnMode');
+    const _toOneBtn = function () {
+      navigate('OneBtnMode', { title: 'One Btn mode', id: 2 });
       this.refs['DRAWER_REF'].closeDrawer();
     }.bind(this);
 
-    const toPad = function () {
-      navigate('Home');
+    const _toPad = function () {
+      navigate('Home', { title: 'Pad mode', id: 3 });
       this.refs['DRAWER_REF'].closeDrawer();
     }.bind(this);
 
-    const toSettings = function () {
-      navigate('Home');
+    const _toSettings = function () {
+      navigate('Home', { title: 'Settings', id: 4 });
       this.refs['DRAWER_REF'].closeDrawer();
     }.bind(this);
 
-    const drawerView = (
+    var calculateMenuStyle = function (nItem) {
+      // a seconda dell'elemento che arriva restituisce lo stile del bottone selezionato se l'id corrisponde al routing attuale
+      if (state.params && nItem == state.params.id)
+        return drawerStyles.selectedBtn;
+      else
+        return drawerStyles.singleBtn;
+    }
+
+    var drawerView = (
       <View style={{ flex: 1 }}>
         <View style={drawerStyles.container}>
           <Image source={require('./images/icon.png')} style={drawerStyles.titleImage} />
@@ -121,32 +145,33 @@ export default class BluetoothController extends React.Component {
         </View>
         <ScrollView>
           <View style={drawerStyles.buttons}>
-            <TouchableNativeFeedback onPress={toHome} underlayColor="white">
-              <View style={drawerStyles.singleBtn}>
+            <TouchableNativeFeedback onPress={_toHome} underlayColor="white">
+              {/*Passo appunto ad una funzioncina il numero della voce, se corrisponde a quella attiva data dall'id del navigatore allora si evidenzierà di grigio*/}
+              <View style={calculateMenuStyle(0)}>
                 <Image source={require('./images/homeIcon.png')} style={drawerStyles.buttonIcon} />
                 <Text style={drawerStyles.buttonText}>Bluetooth Devices</Text>
               </View>
             </TouchableNativeFeedback>
-            <TouchableNativeFeedback onPress={toKybrd} underlayColor="white">
-              <View style={drawerStyles.singleBtn}>
+            <TouchableNativeFeedback onPress={_toKybrd} underlayColor="white">
+              <View style={calculateMenuStyle(1)}>
                 <Image source={require('./images/kybrdIcon.png')} style={drawerStyles.buttonIcon} />
                 <Text style={drawerStyles.buttonText}>Keyboard mode</Text>
               </View>
             </TouchableNativeFeedback>
-            <TouchableNativeFeedback onPress={toOneBtn} underlayColor="white">
-              <View style={drawerStyles.singleBtn}>
+            <TouchableNativeFeedback onPress={_toOneBtn} underlayColor="white">
+              <View style={calculateMenuStyle(2)}>
                 <Image source={require('./images/onebtnIcon.png')} style={drawerStyles.buttonIcon} />
                 <Text style={drawerStyles.buttonText}>One Button mode</Text>
               </View>
             </TouchableNativeFeedback>
-            <TouchableNativeFeedback onPress={toPad} underlayColor="white">
-              <View style={drawerStyles.singleBtn}>
+            <TouchableNativeFeedback onPress={_toPad} underlayColor="white">
+              <View style={calculateMenuStyle(3)}>
                 <Image source={require('./images/padIcon.png')} style={drawerStyles.buttonIcon} />
                 <Text style={drawerStyles.buttonText}>Pad mode</Text>
               </View>
             </TouchableNativeFeedback>
-            <TouchableNativeFeedback onPress={toSettings} underlayColor="white">
-              <View style={drawerStyles.singleBtn}>
+            <TouchableNativeFeedback onPress={_toSettings} underlayColor="white">
+              <View style={calculateMenuStyle(4)}>
                 <Image source={require('./images/settingsIcon.png')} style={drawerStyles.buttonIcon} />
                 <Text style={drawerStyles.buttonText}>Settings</Text>
               </View>
@@ -169,8 +194,10 @@ export default class BluetoothController extends React.Component {
             backgroundColor="#1976D2"
             barStyle="light-content"
           />
+          {/*Se i parametri sono nulli allora non è stata fatta una navigazione.. quindi siamo all'inizio, altrimenti la nav contiene il titolo della sezione scelta
+            e lo usiamo per la toolbar. this.props.navigation.state.params.title contine questo dato */}
           <ToolbarAndroid
-            title='Bluetooth Controller'
+            title={state.params == undefined ? 'Bluetoooth Controller' : state.params.title}
             titleColor='white'
             style={mainStyles.toolbar}
             navIcon={require('./images/menu.png')}
@@ -184,6 +211,7 @@ export default class BluetoothController extends React.Component {
             }}
           />
         </View>
+
       </DrawerLayoutAndroid>
 
     );

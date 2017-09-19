@@ -20,8 +20,10 @@ export class OneBtnMode extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    // in state troviamo i parametri passati dal navigatore
+    const { state } = this.props.navigation;
     return (
-      <Text>Something works...</Text>
+      <Text>Something works... {state.params.title}</Text>
     );
   }
 }
