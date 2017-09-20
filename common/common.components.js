@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Image, Text, ScrollView, StatusBar, ToolbarAndroid, Alert } from 'react-native';
 import { DrawerItems } from 'react-navigation';
-import { mainStyles, drawerStyles } from '../styles/index.styles';
+import { mainStyles, drawerStyles } from '../styles/common.styles';
 
 // componente necessario a inserire elementi nuovi nel drawer predefinito
 export class CustomDrawerContentComponent extends Component {

@@ -37,25 +37,6 @@ export const drawerStyles = StyleSheet.create({
         width: 45,
         height: 45,
     },
-    buttons: {
-        alignItems: 'flex-start',
-        paddingTop: 2
-    },
-    selectedBtn: {
-        backgroundColor: '#f2f2f2',
-        width: '100%',
-        flexDirection: 'row',
-        padding: 18,
-    },
-    singleBtn: {
-        width: '100%',
-        flexDirection: 'row',
-        padding: 18,
-    },
-    buttonText: {
-        paddingLeft: 15,
-        fontSize: 16,
-    },
     buttonIcon: {
         width: 24,
         height: 24,

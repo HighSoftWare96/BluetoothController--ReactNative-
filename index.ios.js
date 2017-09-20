@@ -1,19 +1,34 @@
-import React, { Component } from "react";
-import { AppRegistry } from "react-native";
-import { StackNavigator } from "react-navigation";
-import { OneBtnMode } from "./screens/oneBtnMode";
-import { Home } from "./screens/home"
+// import delle librerie e dei componenti react =============================
+import React, { Component } from 'react';
+import { AppRegistry, ScrollView } from 'react-native';
+import { DrawerNavigator, DrawerItems, View, Image, Text } from 'react-navigation';
+import { drawerStyles } from './styles/common.styles';
+import { AppHome } from './app';
+import { OneBtnMode } from './screens/oneBtnMode';
+import { KybrdMode } from './screens/kybrdMode';
+import { PadMode } from './screens/padMode';
+import { Settings } from './screens/settings';
+import { CustomDrawerContentComponent } from './common/common.components';
 
+// classe principale per il rendering degli elementi su schermo =============================
 export default class BluetoothController extends React.Component {
-  static navigationOptions = {
-    title: "Home",
-    header: null,
-  };
-
   render() {
     return (
-      <Home nav={this.props.navigation} />
+      <AppHome navigation={this.props.navigation} />
     );
   }
-};
+}
+// impostazione del routing
+const RouterOutlet = DrawerNavigator({
+  Home: { screen: AppHome },
+  KybrdMode: { screen: KybrdMode },
+  OneBtnMode: { screen: OneBtnMode },
+  PadMode: { screen: PadMode },
+  Settings: { screen: Settings },
+}, {
+    drawerWidth: 280,
+    contentComponent: CustomDrawerContentComponent,
+    initialRouteName: 'Home',
+});
 
+AppRegistry.registerComponent('BluetoothController', () => RouterOutlet);

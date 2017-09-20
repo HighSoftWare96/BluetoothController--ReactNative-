@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DrawerLayoutAndroid, AppRegistry, Text, View, Alert, StatusBar, ToolbarAndroid, Image, TouchableNativeFeedback, ScrollView, } from 'react-native';
 import { StackNavigator, } from 'react-navigation';
-import { drawerStyles, mainStyles } from '../styles/index.styles';
+import { drawerStyles, mainStyles } from '../styles/common.styles';
 import { CommonBars } from '../common/common.components';
 import { evaluateActionBarTitle } from '../common/common.functions';
 
